@@ -5,7 +5,9 @@ from fastapi import FastAPI
 from app.core.config import settings
 from app.core.database import connect_to_mongo, close_mongo_connection, initialize_database
 
+from app.test_timezone import timecheck
 
+from app.report.routes import router as report_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -26,7 +28,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-
+app.include_router(
+    report_router,
+    prefix=settings.API_V1_STR,
+)
 
 @app.get("/")
 async def root():
@@ -42,3 +47,8 @@ async def health():
         "status": "healthy",
         "database": "connected",
     }
+
+@app.get('/report')
+async def report():
+    ans = timecheck()
+    return {"message":ans}
