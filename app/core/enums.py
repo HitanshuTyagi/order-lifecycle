@@ -4,6 +4,7 @@ from enum import Enum
 class UserRole(str, Enum):
     PICKER = "picker"
     DELIVERY_BOY = "delivery_boy"
+    WAREHOUSE_MANAGER = "warehouse_manager"
 
 
 class OrderStatus(str, Enum):
