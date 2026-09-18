@@ -5,6 +5,8 @@ from fastapi import FastAPI
 from app.core.config import settings
 from app.core.database import connect_to_mongo, close_mongo_connection, initialize_database
 
+from app.orders.routes import router as orders_router
+
 
 
 @asynccontextmanager
@@ -26,7 +28,10 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-
+app.include_router(
+    orders_router,
+    prefix=settings.API_V1_STR
+)
 
 @app.get("/")
 async def root():
