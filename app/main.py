@@ -6,7 +6,8 @@ from app.core.config import settings
 from app.core.database import connect_to_mongo, close_mongo_connection, initialize_database
 
 from app.orders.routes import router as orders_router
-
+from app.users.routes import router as users_router
+from app.picker.routes import router as packing_router
 
 
 @asynccontextmanager
@@ -29,7 +30,17 @@ app = FastAPI(
 )
 
 app.include_router(
+    users_router,
+    prefix=settings.API_V1_STR
+)
+
+app.include_router(
     orders_router,
+    prefix=settings.API_V1_STR
+)
+
+app.include_router(
+    packing_router,
     prefix=settings.API_V1_STR
 )
 
