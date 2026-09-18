@@ -20,3 +20,8 @@ async def daily_report(
     report_date: date = Query(..., alias="date"),
 ):
     return await get_daily_report(report_date)
+
+
+@router.get("/health")
+def health():
+    return {"message":"It works now"}
