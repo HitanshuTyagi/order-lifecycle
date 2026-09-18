@@ -8,7 +8,9 @@ from app.core.database import connect_to_mongo, close_mongo_connection, initiali
 from app.orders.routes import router as orders_router
 from app.users.routes import router as users_router
 from app.picker.routes import router as packing_router
+from app.test_timezone import timecheck
 
+from app.report.routes import router as report_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -42,6 +44,8 @@ app.include_router(
 app.include_router(
     packing_router,
     prefix=settings.API_V1_STR
+    report_router,
+    prefix=settings.API_V1_STR,
 )
 
 @app.get("/")
@@ -58,3 +62,8 @@ async def health():
         "status": "healthy",
         "database": "connected",
     }
+
+@app.get('/report')
+async def report():
+    ans = timecheck()
+    return {"message":ans}
