@@ -30,7 +30,35 @@ async def connect_to_mongo():
         settings.DATABASE_NAME
     ]
 
+async def initialize_database():
+    db = get_database()
 
+    # Create collections if they don't exist
+    existing_collections = await db.list_collection_names()
+
+    if "users" not in existing_collections:
+        await db.create_collection("users")
+
+    if "orders" not in existing_collections:
+        await db.create_collection("orders")
+
+    if "deliveries" not in existing_collections:
+        await db.create_collection("deliveries")
+
+    if "config" not in existing_collections:
+        await db.create_collection("config")
+
+    # Task 2: prevent duplicate delivery records
+    await db.deliveries.create_index(
+        "order_id",
+        unique=True
+    )
+
+    # Useful indexes
+    await db.orders.create_index("status")
+    await db.deliveries.create_index("delivered_at")
+    await db.users.create_index("role")
+    
 async def close_mongo_connection():
     """Close MongoDB connection during application shutdown."""
 
