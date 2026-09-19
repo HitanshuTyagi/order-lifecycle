@@ -8,6 +8,7 @@ from app.core.database import connect_to_mongo, close_mongo_connection, initiali
 from app.orders.routes import router as orders_router
 from app.users.routes import router as users_router
 from app.picker.routes import router as packing_router
+from app.batching.routes import router as batching_router
 from app.test_timezone import timecheck
 
 from app.report.routes import router as report_router
@@ -44,7 +45,14 @@ app.include_router(
 app.include_router(
     packing_router,
     prefix=settings.API_V1_STR
+)
+
+app.include_router(
     report_router,
+    prefix=settings.API_V1_STR,
+)
+app.include_router(
+    batching_router,
     prefix=settings.API_V1_STR,
 )
 
@@ -67,3 +75,5 @@ async def health():
 async def report():
     ans = timecheck()
     return {"message":ans}
+
+
