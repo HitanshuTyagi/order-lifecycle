@@ -17,11 +17,13 @@ router = APIRouter(
     response_model=DailyReportResponse,
 )
 async def daily_report(
-    report_date: date = Query(..., alias="date"),
-):
+    report_date: date = Query(
+        ...,
+        alias="date",
+        description="Local calendar date, e.g. 2026-09-18",
+    ),
+) -> DailyReportResponse:
+    """
+    Return delivery statistics for the requested local date.
+    """
     return await get_daily_report(report_date)
-
-
-@router.get("/health")
-def health():
-    return {"message":"It works now"}
