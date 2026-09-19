@@ -67,7 +67,7 @@ async def get_daily_report(
 
         # Calculate elapsed time using UTC timestamps.
         duration = delivered_at_utc - created_at_utc
-        duration_minutes = duration.total_seconds() / 60
+        duration_minutes = duration.total_seconds() // 60
 
         # Rider information is embedded in the current order shape.
         # `.get()` keeps this safe for older documents.
@@ -108,7 +108,7 @@ async def get_daily_report(
     ]
 
     if durations:
-        average_duration = sum(durations) / len(durations)
+        average_duration = sum(durations) // len(durations)
         minimum_duration = min(durations)
         maximum_duration = max(durations)
     else:
