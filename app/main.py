@@ -8,9 +8,10 @@ from app.core.database import connect_to_mongo, close_mongo_connection, initiali
 from app.orders.routes import router as orders_router
 from app.users.routes import router as users_router
 from app.picker.routes import router as packing_router
+from app.delivery.router import order_router as delivery_order_router
+from app.delivery.router import delivery_router as delivery_list_router
 from app.batching.routes import router as batching_router
 from app.test_timezone import timecheck
-
 from app.report.routes import router as report_router
 
 @asynccontextmanager
@@ -44,6 +45,16 @@ app.include_router(
 
 app.include_router(
     packing_router,
+    prefix=settings.API_V1_STR
+)
+
+app.include_router(
+    delivery_order_router,
+    prefix=settings.API_V1_STR
+)
+
+app.include_router(
+    delivery_list_router,
     prefix=settings.API_V1_STR
 )
 
