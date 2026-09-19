@@ -14,7 +14,6 @@ service = UserService()
 
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_user(request: CreateUserRequest):
-
     return await service.create_user(request)
 
 @router.get("/pickers")
