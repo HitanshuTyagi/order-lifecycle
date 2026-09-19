@@ -10,7 +10,8 @@ from app.users.routes import router as users_router
 from app.picker.routes import router as packing_router
 from app.delivery.router import order_router as delivery_order_router
 from app.delivery.router import delivery_router as delivery_list_router
-
+from app.test_timezone import timecheck
+from app.report.routes import router as report_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -56,6 +57,11 @@ app.include_router(
     prefix=settings.API_V1_STR
 )
 
+app.include_router(
+    report_router,
+    prefix=settings.API_V1_STR,
+)
+
 @app.get("/")
 async def root():
     return {
@@ -70,3 +76,8 @@ async def health():
         "status": "healthy",
         "database": "connected",
     }
+
+@app.get('/report')
+async def report():
+    ans = timecheck()
+    return {"message":ans}
