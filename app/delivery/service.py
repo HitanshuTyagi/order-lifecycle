@@ -49,11 +49,17 @@ class DeliveryService:
             and order.get("rider", {}).get("id")
             == request.rider_id
         ):
+            assigned_at = (order.get("rider") or {}).get("assigned_at")
+            if assigned_at is None:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="Order has incomplete rider assignment",
+                )
             return AssignRiderResponse(
                 order_id=order_id,
                 rider_id=request.rider_id,
                 status="assigned_to_rider",
-                assigned_at=order["rider"]["assigned_at"],
+                assigned_at=assigned_at,
             )
 
         # Order must be in PACKED status

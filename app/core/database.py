@@ -4,7 +4,6 @@ from motor.motor_asyncio import (
     AsyncIOMotorClient,
     AsyncIOMotorDatabase,
 )
-
 from app.core.config import settings
 
 
@@ -14,6 +13,56 @@ class DatabaseManager:
 
 
 db_manager = DatabaseManager()
+
+ORDER_VALIDATOR = {
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": [
+            "_id",
+            "customer_id",
+            "items",
+            "delivery_location",
+            "status",
+            "packer",
+            "packed_at",
+            "rider",
+            "delivered_at",
+            "created_at",
+            "updated_at",
+        ],
+        "properties": {
+            "_id": {"bsonType": "string"},
+            "customer_id": {"bsonType": "string"},
+            "items": {
+                "bsonType": "array",
+                "minItems": 1,
+                "items": {
+                    "bsonType": "object",
+                    "required": ["medicine_id", "name", "quantity"],
+                },
+            },
+            "delivery_location": {
+                "bsonType": "object",
+                "required": ["latitude", "longitude"],
+            },
+            "status": {
+                "enum": [
+                    "created",
+                    "assigned_to_packer",
+                    "packed",
+                    "assigned_to_rider",
+                    "delivered",
+                ]
+            },
+            "packer": {"bsonType": ["object", "null"]},
+            "packed_at": {"bsonType": ["date", "null"]},
+            "rider": {"bsonType": ["object", "null"]},
+            "delivered_at": {"bsonType": ["date", "null"]},
+            "created_at": {"bsonType": "date"},
+            "updated_at": {"bsonType": "date"},
+        },
+    }
+}
 
 
 async def connect_to_mongo():
@@ -40,7 +89,20 @@ async def initialize_database():
         await db.create_collection("users")
 
     if "orders" not in existing_collections:
-        await db.create_collection("orders")
+        await db.create_collection(
+            "orders",
+            validator=ORDER_VALIDATOR,
+            validationLevel="strict",
+            validationAction="error",
+        )
+    else:
+        await db.command(
+            "collMod",
+            "orders",
+            validator=ORDER_VALIDATOR,
+            validationLevel="strict",
+            validationAction="error",
+        )
 
     if "deliveries" not in existing_collections:
         await db.create_collection("deliveries")

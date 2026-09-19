@@ -119,7 +119,7 @@ async def create_batch() -> BatchResponse:
 
         selected_orders.append(
             BatchOrder(
-                order_id=str(order["_id"]),
+                order_id=str(order.get("_id", "unknown")),
                 latitude=latitude,
                 longitude=longitude,
             )

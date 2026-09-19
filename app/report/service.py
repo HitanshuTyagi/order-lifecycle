@@ -76,7 +76,7 @@ async def get_daily_report(
 
         report_orders.append(
             DailyReportItem(
-                order_id=str(order["_id"]),
+                order_id=str(order.get("_id", "unknown")),
                 rider_id=rider_id,
 
                 # Convert UTC to local time only at the response edge.
