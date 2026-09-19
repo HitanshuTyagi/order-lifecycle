@@ -36,3 +36,6 @@ class UserService:
 
     async def get_picker_status(self, picker_id: str):
         return await self.repository.get_picker_status(picker_id)
+    
+    async def get_all_users(self):
+        return await self.repository.get_all_users()
