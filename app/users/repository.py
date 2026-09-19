@@ -22,6 +22,17 @@ class UserRepository:
 
         return user
     
+    async def get_all_users(self):
+        db=get_database()
+
+        users=await db.users.find({}).to_list(length=None)
+
+        for user in users:
+
+            user["_id"]=str(user["_id"])
+            
+            return users
+
     async def get_all_pickers(self):
         db = get_database()
 
