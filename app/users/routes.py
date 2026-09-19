@@ -28,3 +28,7 @@ async def get_picker(picker_id: str):
 @router.get("/pickers/{picker_id}/status")
 async def get_picker_status(picker_id: str):
     return await service.get_picker_status(picker_id)
+
+@router.get("/users")
+async def get_all_users():
+    return await service.get_all_users()
