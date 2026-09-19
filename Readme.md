@@ -37,33 +37,16 @@ order-lifecycle/
 │       └── repository.py               # Orders/config DB access
 │
 ├── tests/
-│   ├── integration/                    # Real HTTP endpoint tests
-│   │   ├── test_orders.py
-│   │   ├── test_packing.py
-│   │   ├── test_delivery.py
-│   │   └── test_reporting.py
-│   │
-│   ├── concurrency/                    # Race-condition tests
-│   │   └── test_packing_concurrency.py
-│   │
-│   ├── legacy/                         # Old-document compatibility tests
-│   │   └── test_legacy_orders.py
-│   │
-│   └── fixtures/                       # Reusable test data
-│       └── seed_data.py
+│   ├── test_legacy_order_read.py                    
 │
-├── scripts/
-│   ├── setup_db.py                     # Collections/indexes/validators
-│   └── seed_db.py                      # Development seed data
-│
-├── .github/
-│   └── workflows/
-│       └── ci.yml                      # Run tests automatically in PRs
 │
 ├── .env.example                        # Required environment variables
 ├── .gitignore                          # Files Git should ignore
 ├── requirements.txt                    # Python dependencies
-├── Dockerfile                          # Backend container definition
-├── docker-compose.yml                  # Backend + MongoDB local setup
 ├── pytest.ini                           # Test configuration
 └── README.md                           # Project documentation
+
+
+
+To create the venv environment- .\venv\Scripts\Activate.ps1 
+To start the project- uvicorn app.main:app --reload    
